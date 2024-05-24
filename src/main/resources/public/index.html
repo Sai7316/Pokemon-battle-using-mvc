@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" rel="stylesheet">
+    <link href="app.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+    
+</head>
+<body style="background-color:rgb(240, 219, 33);">
+    
+<div id="app" style="text-align: center;" class="section is-size-2">
+
+
+    <h1 style="text-align: center; font-size: 100px;">POKEMON BATTLE</h1>
+
+
+    <label for="pokemonA">Select POKEMON A:</label>
+    <select id="pokemonA" v-model="selectedPokemonA" style="text-align: center;">
+    </select>
+
+    <div style="margin-top: 10px;"></div>
+
+    <label for="pokemonB">Select POKEMON B:</label>
+    <select id="pokemonB" v-model="selectedPokemonB" style="text-align: center;">
+    </select>
+    
+
+    <!-- <input v-model="selectedPokemonA"></input>
+    <input v-model="selectedPokemonB"></input> -->
+    
+
+    <p>The selected Pokemons for Battle : {{ selectedPokemonA }}, {{ selectedPokemonB }}</p>
+
+    <p>
+        <button v-on:click="battle()" class="button">Battle!</button>
+    </p>
+
+    <p>Winner: {{ pokemonName }}</p>
+
+    <p>And it's remaining HP: {{ hp }}</p>
+
+    <img class="sprite" v-bind:src="'https://img.pokemondb.net/artwork/avif/' + pokemonName.toLowerCase() + '.avif'"/>
+</div>
+<script src="app.js" defer></script>
+<script>
+    function populateDropdown(pokemonNames) {
+        const dropdownA = document.getElementById('pokemonA');
+        const dropdownB = document.getElementById('pokemonB');
+
+        pokemonNames.forEach(pokemon => {
+            const optionA = document.createElement('option');
+            optionA.value = pokemon;
+            optionA.textContent = pokemon;
+            console.log(optionA)
+            dropdownA.appendChild(optionA);
+
+            const optionB = document.createElement('option');
+            optionB.value = pokemon;
+            optionB.textContent = pokemon;
+            console.log(optionB)
+            dropdownB.appendChild(optionB);
+        });
+    }
+
+    fetch('/pokemonNames')
+        .then(response => response.json())
+        .then(data => populateDropdown(data))
+        .catch(error => console.error('Error fetching Pokemon names:', error));
+</script>
+</body>
+</html>
